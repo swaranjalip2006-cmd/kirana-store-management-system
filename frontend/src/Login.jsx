@@ -22,12 +22,12 @@ function Login({ onLogin }) {
       const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
-          password
-        })
+          password,
+        }),
       });
 
       const data = await response.json();
@@ -60,32 +60,51 @@ function Login({ onLogin }) {
         <div style={styles.logo}>🛒</div>
 
         <h1 style={styles.title}>Kirana Store</h1>
-        <p style={styles.subtitle}>Management System</p>
+
+        <p style={styles.subtitle}>
+          Management System
+        </p>
+
+        <div style={styles.divider}></div>
+
+        <h2 style={styles.loginTitle}>Admin Login</h2>
 
         <form onSubmit={handleLogin}>
           <div style={styles.formGroup}>
-            <label>Email</label>
+            <label style={styles.label}>Email Address</label>
+
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={styles.input}
             />
           </div>
 
           <div style={styles.formGroup}>
-            <label>Password</label>
+            <label style={styles.label}>Password</label>
+
             <input
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              style={styles.input}
             />
           </div>
 
-          {error && <div style={styles.error}>{error}</div>}
+          {error && (
+            <div style={styles.error}>
+              {error}
+            </div>
+          )}
 
-          <button type="submit" style={styles.button} disabled={loading}>
+          <button
+            type="submit"
+            style={styles.button}
+            disabled={loading}
+          >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
@@ -101,80 +120,109 @@ function Login({ onLogin }) {
 const styles = {
   container: {
     minHeight: "100vh",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f5f6fa",
-    padding: "20px",
+    padding: "30px",
     boxSizing: "border-box",
-    fontFamily: "Arial, sans-serif"
+    fontFamily: "Arial, sans-serif",
   },
 
   loginBox: {
     width: "100%",
-    maxWidth: "420px",
-    backgroundColor: "white",
-    padding: "40px",
-    borderRadius: "14px",
-    boxShadow: "0 5px 25px rgba(0,0,0,0.12)",
-    boxSizing: "border-box"
+    maxWidth: "480px",
+    backgroundColor: "#ffffff",
+    padding: "45px",
+    borderRadius: "16px",
+    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12)",
+    boxSizing: "border-box",
   },
 
   logo: {
     textAlign: "center",
-    fontSize: "50px",
-    marginBottom: "10px"
+    fontSize: "58px",
+    marginBottom: "10px",
   },
 
   title: {
     textAlign: "center",
     margin: "0",
-    fontSize: "30px"
+    fontSize: "34px",
+    color: "#222",
   },
 
   subtitle: {
     textAlign: "center",
     color: "#666",
+    fontSize: "17px",
     marginTop: "8px",
-    marginBottom: "30px"
+    marginBottom: "25px",
+  },
+
+  divider: {
+    height: "1px",
+    backgroundColor: "#e0e0e0",
+    marginBottom: "25px",
+  },
+
+  loginTitle: {
+    textAlign: "center",
+    marginBottom: "25px",
+    fontSize: "22px",
+    color: "#333",
   },
 
   formGroup: {
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
 
   label: {
     display: "block",
     marginBottom: "8px",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontSize: "14px",
+    color: "#333",
+  },
+
+  input: {
+    width: "100%",
+    padding: "13px 14px",
+    border: "1px solid #ccc",
+    borderRadius: "7px",
+    fontSize: "15px",
+    boxSizing: "border-box",
+    outline: "none",
   },
 
   error: {
     backgroundColor: "#ffe5e5",
-    color: "#c00",
-    padding: "10px",
-    borderRadius: "6px",
+    color: "#c00000",
+    padding: "11px",
+    borderRadius: "7px",
     marginBottom: "15px",
-    fontSize: "14px"
+    fontSize: "14px",
   },
 
   button: {
     width: "100%",
-    padding: "13px",
+    padding: "14px",
     border: "none",
     borderRadius: "7px",
     backgroundColor: "#222",
     color: "white",
     fontSize: "16px",
-    cursor: "pointer"
+    fontWeight: "bold",
+    cursor: "pointer",
   },
 
   footer: {
     textAlign: "center",
     color: "#888",
     fontSize: "12px",
-    marginTop: "25px"
-  }
+    marginTop: "25px",
+  },
 };
 
 export default Login;
