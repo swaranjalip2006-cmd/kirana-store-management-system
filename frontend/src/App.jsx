@@ -108,12 +108,14 @@ function App() {
   }
 
   if (!user && showLogin) {
-    return (
-      <Login
-        onLogin={handleLogin}
-      />
-    );
-  }
+  return (
+    <Login
+      onLogin={handleLogin}
+      onBackHome={() => setShowLogin(false)}
+    />
+  );
+}
+
 
   if (user.role === "Customer") {
     return (
@@ -147,19 +149,33 @@ function HomePage({ onLogin }) {
       <header style={homeHeaderStyle}>
         <div style={homeNavStyle}>
 
-          <div style={homeLogoStyle}>
-            🏪 Kirana Store
-          </div>
+          
 
-          <button
-            onClick={onLogin}
-            style={homeLoginButtonStyle}
-          >
-            Login
-          </button>
+<div style={homeLogoStyle}>
+  <img
+    src="/kirana-icon.png"
+    alt="Smart Kirana Logo"
+    style={{
+      width: "42px",
+      height: "42px",
+      objectFit: "contain",
+      marginRight: "10px",
+      verticalAlign: "middle"
+    }}
+  />
+  Smart Kirana
+</div>
 
-        </div>
-      </header>
+<button
+  onClick={onLogin}
+  style={homeLoginButtonStyle}
+>
+  Login
+</button>
+
+</div>
+</header>
+
 
       {/* HERO SECTION */}
       <section style={heroSectionStyle}>
@@ -193,21 +209,38 @@ function HomePage({ onLogin }) {
 
           </div>
 
+          
+
           <div style={heroIconBoxStyle}>
-            <div style={heroStoreIconStyle}>
-              🏪
-            </div>
+            <img
+              src="/kirana-icon.png"
+              alt="Smart Kirana"
+              style={{
+                width: "150px",
+                height: "150px",
+                objectFit: "contain",
+                marginBottom: "15px"
+              }}
+            />
 
             <h2 style={heroStoreTextStyle}>
-              Smart Store
-              <br />
-              Management
+              Smart Kirana
             </h2>
+
+            <p
+              style={{
+                textAlign: "center",
+                color: "#1976d2",
+                fontSize: "15px",
+                margin: "8px 0 0"
+              }}
+            >
+              Store Management System
+            </p>
           </div>
-
         </div>
-
       </section>
+
 
       {/* ABOUT SECTION */}
       <section style={aboutSectionStyle}>
@@ -348,216 +381,554 @@ function HomePage({ onLogin }) {
    ADMIN / STAFF DASHBOARD
 ========================= */
 
-function AdminDashboard({
-  user,
-  page,
-  setPage,
-  counts,
-  onLogout
-}) {
-  const backButton = (
-    <button
-      onClick={() => setPage("dashboard")}
-      style={backButtonStyle}
-    >
-      ← Back to Dashboard
-    </button>
-  );
+function AdminDashboard({ user, page, setPage, counts, onLogout })
+ {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (page === "products") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Products />
-      </div>
-    );
-  }
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: "🏠" },
+    { id: "products", label: "Products", icon: "🛒" },
+    { id: "categories", label: "Categories", icon: "📂" },
+    { id: "suppliers", label: "Suppliers", icon: "🚚" },
+    { id: "purchases", label: "Purchases", icon: "🛍️" },
+    { id: "sales", label: "Sales & Billing", icon: "💰" },
+    { id: "customers", label: "Customers", icon: "👥" },
+    { id: "khata", label: "Digital Khata", icon: "📒" },
+    { id: "reports", label: "Reports", icon: "📊" },
+  ];
 
-  if (page === "categories") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Categories />
-      </div>
-    );
-  }
+  const navigate = (nextPage) => {
+    setPage(nextPage);
+    setSidebarOpen(false);
+  };
 
-  if (page === "suppliers") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Suppliers />
-      </div>
-    );
-  }
+  let pageContent;
 
-  if (page === "purchases") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Purchases />
-      </div>
-    );
-  }
+  switch (page) {
+    case "products":
+      pageContent = <Products />;
+      break;
+    case "categories":
+      pageContent = <Categories />;
+      break;
+    case "suppliers":
+      pageContent = <Suppliers />;
+      break;
+    case "purchases":
+      pageContent = <Purchases />;
+      break;
+    case "sales":
+      pageContent = <Sales />;
+      break;
+    case "customers":
+      pageContent = <Customers />;
+      break;
+    case "khata":
+      pageContent = <Khata />;
+      break;
+    case "reports":
+      pageContent = <Reports />;
+      break;
+    default:
+      pageContent = (
+        <>
+          <div className="admin-welcome">
+            <h2>Welcome back, {user.name}! 👋</h2>
+            <p>Here is your Kirana Store business overview.</p>
+          </div>
 
-  if (page === "sales") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Sales />
-      </div>
-    );
-  }
-
-  if (page === "customers") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Customers />
-      </div>
-    );
-  }
-
-  if (page === "khata") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Khata />
-      </div>
-    );
-  }
-
-  /* =========================
-     REPORTS PAGE
-  ========================= */
-
-  if (page === "reports") {
-    return (
-      <div style={pageStyle}>
-        {backButton}
-        <Reports />
-      </div>
-    );
+          <div className="admin-dashboard-grid">
+            {[
+              {
+                id: "products",
+                icon: "🛒",
+                title: "Products",
+                count: counts.products,
+                description: "Manage products and stock",
+              },
+              {
+                id: "categories",
+                icon: "📂",
+                title: "Categories",
+                count: counts.categories,
+                description: "Manage product categories",
+              },
+              {
+                id: "suppliers",
+                icon: "🚚",
+                title: "Suppliers",
+                count: counts.suppliers,
+                description: "Manage suppliers",
+              },
+              {
+                id: "purchases",
+                icon: "🛍️",
+                title: "Purchases",
+                count: counts.purchases,
+                description: "Manage purchases",
+              },
+              {
+                id: "sales",
+                icon: "💰",
+                title: "Sales & Billing",
+                count: counts.sales,
+                description: "Manage sales and billing",
+              },
+              {
+                id: "customers",
+                icon: "👥",
+                title: "Customers",
+                count: counts.customers,
+                description: "Manage customer records",
+              },
+              {
+                id: "khata",
+                icon: "📒",
+                title: "Digital Khata",
+                count: "Open",
+                description: "Manage credit and payments",
+              },
+              {
+                id: "reports",
+                icon: "📊",
+                title: "Reports",
+                count: "View",
+                description: "Business reports and analytics",
+              },
+            ].map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                className="admin-dashboard-card"
+                onClick={() => navigate(item.id)}
+              >
+                <span className="admin-card-icon">{item.icon}</span>
+                <span className="admin-card-title">{item.title}</span>
+                <span className="admin-card-count">{item.count}</span>
+                <span className="admin-card-description">
+                  {item.description}
+                </span>
+                <span className="admin-card-link">Open section →</span>
+              </button>
+            ))}
+          </div>
+        </>
+      );
   }
 
   return (
-    <div style={dashboardStyle}>
+    <div className="admin-app-shell">
+      <style>{`
+        .admin-app-shell {
+          display: flex;
+          min-height: 100vh;
+          background: #f5f6fa;
+          color: #222;
+          font-family: Arial, sans-serif;
+        }
 
-      <header style={headerStyle}>
+        .admin-sidebar {
+          width: 250px;
+          flex: 0 0 250px;
+          box-sizing: border-box;
+          background: #172554;
+          color: white;
+          padding: 22px 14px;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
 
-        <div style={topBarStyle}>
+        .admin-brand {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 4px 10px 25px;
+          font-size: 19px;
+          font-weight: 700;
+        }
 
+        .admin-brand img {
+          width: 38px;
+          height: 38px;
+          object-fit: contain;
+          background: white;
+          border-radius: 8px;
+        }
+
+        .admin-sidebar-label {
+          color: #a5b4fc;
+          font-size: 11px;
+          font-weight: bold;
+          letter-spacing: 1.5px;
+          padding: 0 12px 12px;
+        }
+
+        .admin-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .admin-nav-button {
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          width: 100%;
+          padding: 12px;
+          border: 0;
+          border-radius: 8px;
+          background: transparent;
+          color: #dbeafe;
+          text-align: left;
+          font-size: 14px;
+          cursor: pointer;
+        }
+
+        .admin-nav-button:hover {
+          background: #263b73;
+          color: white;
+        }
+
+        .admin-nav-button.active {
+          background: #3b82f6;
+          color: white;
+          font-weight: bold;
+        }
+
+        .admin-sidebar-bottom {
+          margin-top: auto;
+          padding-top: 24px;
+        }
+
+        .admin-signed-in {
+          color: #cbd5e1;
+          font-size: 12px;
+          overflow-wrap: anywhere;
+          padding: 0 10px 12px;
+        }
+
+        .admin-sidebar-logout {
+          width: 100%;
+          padding: 11px;
+          border: 1px solid #64748b;
+          border-radius: 8px;
+          color: white;
+          background: #1e293b;
+          cursor: pointer;
+          font-size: 14px;
+        }
+
+        .admin-sidebar-logout:hover {
+          background: #334155;
+        }
+
+        .admin-main {
+          flex: 1;
+          min-width: 0;
+          padding: 28px;
+          box-sizing: border-box;
+        }
+
+        .admin-topbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+          margin-bottom: 28px;
+        }
+
+        .admin-topbar h1 {
+          font-size: clamp(23px, 3vw, 32px);
+          margin: 0 0 7px;
+        }
+
+        .admin-topbar p {
+          margin: 0;
+          color: #64748b;
+          font-size: 14px;
+        }
+
+        .admin-user-box {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+          padding: 10px 12px;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          background: white;
+        }
+
+        .admin-role {
+          padding: 5px 9px;
+          border-radius: 15px;
+          background: #dbeafe;
+          color: #1d4ed8;
+          font-size: 12px;
+        }
+
+        .admin-top-logout {
+          border: 0;
+          border-radius: 6px;
+          padding: 9px 12px;
+          background: #172554;
+          color: white;
+          cursor: pointer;
+        }
+
+        .admin-welcome {
+          margin-bottom: 24px;
+          padding: 22px;
+          border-radius: 12px;
+          border: 1px solid #dbeafe;
+          background: white;
+        }
+
+        .admin-welcome h2 {
+          margin: 0 0 8px;
+          font-size: 23px;
+        }
+
+        .admin-welcome p {
+          margin: 0;
+          color: #64748b;
+        }
+
+        .admin-dashboard-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+          gap: 18px;
+        }
+
+        .admin-dashboard-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 9px;
+          min-width: 0;
+          min-height: 190px;
+          padding: 21px;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          background: white;
+          color: #1e293b;
+          text-align: left;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .admin-dashboard-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 7px 18px rgba(15, 23, 42, 0.09);
+        }
+
+        .admin-card-icon {
+          font-size: 27px;
+        }
+
+        .admin-card-title {
+          font-size: 17px;
+          font-weight: 700;
+        }
+
+        .admin-card-count {
+          font-size: 27px;
+          font-weight: 700;
+          color: #2563eb;
+        }
+
+        .admin-card-description {
+          font-size: 13px;
+          color: #64748b;
+        }
+
+        .admin-card-link {
+          margin-top: auto;
+          color: #2563eb;
+          font-size: 12px;
+          font-weight: bold;
+        }
+
+        .admin-page-panel {
+          padding: 22px;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          background: white;
+          min-width: 0;
+          overflow-x: auto;
+        }
+
+        .admin-back-button {
+          padding: 10px 14px;
+          margin-bottom: 18px;
+          border: 0;
+          border-radius: 7px;
+          background: #172554;
+          color: white;
+          cursor: pointer;
+        }
+
+        .admin-mobile-bar {
+          display: none;
+        }
+
+        @media (max-width: 760px) {
+          .admin-app-shell {
+            display: block;
+          }
+
+          .admin-mobile-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #172554;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+          }
+
+          .admin-mobile-menu-button {
+            border: 1px solid #64748b;
+            border-radius: 7px;
+            padding: 8px 11px;
+            background: #263b73;
+            color: white;
+            cursor: pointer;
+          }
+
+          .admin-sidebar {
+            display: none;
+            width: 100%;
+            min-height: auto;
+          }
+
+          .admin-sidebar.mobile-open {
+            display: flex;
+          }
+
+          .admin-sidebar-bottom {
+            margin-top: 20px;
+          }
+
+          .admin-main {
+            padding: 18px 12px;
+          }
+
+          .admin-page-panel {
+            padding: 14px;
+          }
+
+          .admin-dashboard-grid {
+            grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+            gap: 12px;
+          }
+
+          .admin-dashboard-card {
+            padding: 15px;
+            min-height: 170px;
+          }
+
+          .admin-user-box {
+            width: 100%;
+          }
+        }
+      `}</style>
+
+      <div className="admin-mobile-bar">
+        <strong>🛒 Smart Kirana</strong>
+        <button
+          type="button"
+          className="admin-mobile-menu-button"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? "✕ Close" : "☰ Menu"}
+        </button>
+      </div>
+
+      <aside
+        className={`admin-sidebar${sidebarOpen ? " mobile-open" : ""}`}
+      >
+        <div className="admin-brand">
+          <img src="/kirana-icon.png" alt="Smart Kirana" />
+          <span>Smart Kirana</span>
+        </div>
+
+        <div className="admin-sidebar-label">MAIN MENU</div>
+
+        <nav className="admin-nav" aria-label="Admin navigation">
+          {navItems.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              className={`admin-nav-button${page === item.id ? " active" : ""}`}
+              onClick={() => navigate(item.id)}
+            >
+              <span>{item.icon}</span>
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        <div className="admin-sidebar-bottom">
+          <div className="admin-signed-in">
+            Signed in as <strong>{user.name}</strong>
+          </div>
+          <button
+            type="button"
+            className="admin-sidebar-logout"
+            onClick={onLogout}
+          >
+            ↪ Logout
+          </button>
+        </div>
+      </aside>
+
+      <main className="admin-main">
+        <header className="admin-topbar">
           <div>
-
-            <h1 style={titleStyle}>
-              Kirana Store Management System
-            </h1>
-
-            <p style={subtitleStyle}>
-              Admin Dashboard
+            <h1>Kirana Store Management System</h1>
+            <p>{page === "dashboard"
+              ? "Admin Dashboard"
+              : navItems.find((item) => item.id === page)?.label || "Dashboard"}
             </p>
-
           </div>
 
-          <div style={userBoxStyle}>
-
+          <div className="admin-user-box">
             <span>
               Welcome, <strong>{user.name}</strong>
             </span>
-
-            <span style={roleStyle}>
-              {user.role}
-            </span>
-
+            <span className="admin-role">{user.role}</span>
             <button
+              type="button"
+              className="admin-top-logout"
               onClick={onLogout}
-              style={logoutButtonStyle}
             >
               Logout
             </button>
-
           </div>
+        </header>
 
-        </div>
-
-      </header>
-
-      <div style={gridStyle}>
-
-        <div
-          onClick={() => setPage("products")}
-          style={cardStyle}
-        >
-          <h2>🛒 Products</h2>
-          <h3>{counts.products}</h3>
-          <p>Manage products and stock</p>
-        </div>
-
-        <div
-          onClick={() => setPage("categories")}
-          style={cardStyle}
-        >
-          <h2>📂 Categories</h2>
-          <h3>{counts.categories}</h3>
-          <p>Manage product categories</p>
-        </div>
-
-        <div
-          onClick={() => setPage("suppliers")}
-          style={cardStyle}
-        >
-          <h2>🚚 Suppliers</h2>
-          <h3>{counts.suppliers}</h3>
-          <p>Manage suppliers</p>
-        </div>
-
-        <div
-          onClick={() => setPage("purchases")}
-          style={cardStyle}
-        >
-          <h2>🛍️ Purchases</h2>
-          <h3>{counts.purchases}</h3>
-          <p>Manage purchases</p>
-        </div>
-
-        <div
-          onClick={() => setPage("sales")}
-          style={cardStyle}
-        >
-          <h2>💰 Sales</h2>
-          <h3>{counts.sales}</h3>
-          <p>Manage sales and billing</p>
-        </div>
-
-        <div
-          onClick={() => setPage("customers")}
-          style={cardStyle}
-        >
-          <h2>👥 Customers</h2>
-          <h3>{counts.customers}</h3>
-          <p>Manage customers</p>
-        </div>
-
-        <div
-          onClick={() => setPage("khata")}
-          style={cardStyle}
-        >
-          <h2>📒 Digital Khata</h2>
-          <h3>₹100</h3>
-          <p>Current outstanding balance</p>
-        </div>
-
-        <div
-          onClick={() => setPage("reports")}
-          style={cardStyle}
-        >
-          <h2>📊 Reports</h2>
-          <h3>View</h3>
-          <p>Business reports and analytics</p>
-        </div>
-
-      </div>
-
+        {page === "dashboard" ? (
+          pageContent
+        ) : (
+          <section className="admin-page-panel">
+            <button
+              type="button"
+              className="admin-back-button"
+              onClick={() => navigate("dashboard")}
+            >
+              ← Back to Dashboard
+            </button>
+            {pageContent}
+          </section>
+        )}
+      </main>
     </div>
   );
 }
@@ -680,82 +1051,197 @@ function Reports() {
 /* =========================
    CUSTOMER DASHBOARD
 ========================= */
-
 function CustomerDashboard({ user, onLogout }) {
-  return (
-    <div style={dashboardStyle}>
+  const [customerPage, setCustomerPage] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [khata, setKhata] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-      <header style={headerStyle}>
+  const token = localStorage.getItem("token");
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        <div style={topBarStyle}>
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: "🏠" },
+    { id: "products", label: "Products", icon: "🛒" },
+    { id: "orders", label: "My Orders", icon: "🧾" },
+    { id: "khata", label: "My Khata", icon: "📒" },
+    { id: "notifications", label: "Notifications", icon: "🔔" },
+    { id: "profile", label: "My Profile", icon: "👤" },
+  ];
 
-          <div>
+  const navigate = (nextPage) => {
+    setCustomerPage(nextPage);
+    setSidebarOpen(false);
+    setMessage("");
+    if (nextPage === "products") loadProducts();
+    if (nextPage === "orders") loadOrders();
+    if (nextPage === "khata") loadKhata();
+  };
 
-            <h1 style={titleStyle}>
-              Kirana Store
-            </h1>
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/products", { headers });
+      const data = await response.json();
+      setProducts(response.ok && Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.log("Products Error:", error);
+      setProducts([]);
+    } finally { setLoading(false); }
+  };
 
-            <p style={subtitleStyle}>
-              Customer Dashboard
-            </p>
+  const loadOrders = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/sales", { headers });
+      const data = await response.json();
+      if (response.ok && Array.isArray(data)) {
+        setOrders(data.filter((sale) => {
+          const customerName = sale.customerName || sale.customer?.name || "";
+          return customerName.toLowerCase() === (user.name || "").toLowerCase();
+        }));
+      } else setOrders([]);
+    } catch (error) {
+      console.log("Orders Error:", error);
+      setOrders([]);
+    } finally { setLoading(false); }
+  };
 
-          </div>
+  const loadKhata = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/khata", { headers });
+      const data = await response.json();
+      if (response.ok && Array.isArray(data)) {
+        setKhata(data.filter((entry) => {
+          const customerName = entry.customer?.name || entry.customerName || "";
+          return customerName.toLowerCase() === (user.name || "").toLowerCase();
+        }));
+      } else setKhata([]);
+    } catch (error) {
+      console.log("Khata Error:", error);
+      setKhata([]);
+    } finally { setLoading(false); }
+  };
 
-          <div style={userBoxStyle}>
-
-            <span>
-              Welcome, <strong>{user.name}</strong>
-            </span>
-
-            <button
-              onClick={onLogout}
-              style={logoutButtonStyle}
-            >
-              Logout
-            </button>
-
-          </div>
-
-        </div>
-
-      </header>
-
-      <div style={customerWelcomeStyle}>
-
-        <h2>
-          Welcome to Kirana Store
-        </h2>
-
-        <p>
-          You are logged in as a customer.
-        </p>
-
-      </div>
-
+  let customerContent;
+  if (customerPage === "products") {
+    customerContent = <>
+      <div style={customerWelcomeStyle}><h1>🛒 Available Products</h1><p>View products available in Kirana Store.</p></div>
+      {loading ? <p>Loading products...</p> : products.length === 0 ? <div style={customerWelcomeStyle}><p>No products available.</p></div> :
+        <div style={gridStyle}>{products.map((product) => <div key={product._id} style={cardStyle}>
+          <h2>🛒 {product.name}</h2>
+          <p><strong>Category:</strong> {product.category?.name || product.category || "N/A"}</p>
+          <p><strong>Price:</strong> ₹{product.price ?? 0}</p>
+          <p><strong>Stock:</strong> {product.quantity ?? product.stock ?? 0}</p>
+        </div>)}</div>}
+    </>;
+  } else if (customerPage === "orders") {
+    customerContent = <>
+      <div style={customerWelcomeStyle}><h1>🧾 My Orders</h1><p>Purchase history for {user.name}.</p></div>
+      {loading ? <p>Loading orders...</p> : orders.length === 0 ? <div style={customerWelcomeStyle}><p>No orders found.</p></div> :
+        <div style={gridStyle}>{orders.map((order) => <div key={order._id} style={cardStyle}>
+          <h2>🧾 Order</h2>
+          <p><strong>Product:</strong> {order.product?.name || order.productName || "N/A"}</p>
+          <p><strong>Quantity:</strong> {order.quantity ?? 0}</p>
+          <p><strong>Total:</strong> ₹{order.totalAmount ?? order.total ?? 0}</p>
+          <p><strong>Payment:</strong> {order.paymentMethod || "N/A"}</p>
+        </div>)}</div>}
+    </>;
+  } else if (customerPage === "khata") {
+    customerContent = <>
+      <div style={customerWelcomeStyle}><h1>📒 My Khata</h1><p>Credit and outstanding balance for {user.name}.</p></div>
+      {loading ? <p>Loading Khata...</p> : khata.length === 0 ? <div style={customerWelcomeStyle}><p>No Khata entries found.</p></div> :
+        <div style={gridStyle}>{khata.map((entry) => <div key={entry._id} style={cardStyle}>
+          <h2>📒 Khata Entry</h2>
+          <p><strong>Type:</strong> {entry.type || "Credit"}</p>
+          <p><strong>Amount:</strong> ₹{entry.amount ?? 0}</p>
+          <p><strong>Balance:</strong> ₹{entry.balance ?? 0}</p>
+          <p><strong>Date:</strong> {entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : "N/A"}</p>
+        </div>)}</div>}
+    </>;
+  } else if (customerPage === "notifications") {
+    customerContent = <>
+      <div style={customerWelcomeStyle}><h1>🔔 Notifications</h1><p>Payment reminders and important updates.</p></div>
       <div style={gridStyle}>
-
-        <div style={cardStyle}>
-          <h2>🛒 Products</h2>
-          <p>View available products</p>
-        </div>
-
-        <div style={cardStyle}>
-          <h2>🧾 My Orders</h2>
-          <p>View your purchase history</p>
-        </div>
-
-        <div style={cardStyle}>
-          <h2>📒 My Khata</h2>
-          <p>View credit and outstanding balance</p>
-        </div>
-
-        <div style={cardStyle}>
-          <h2>🔔 Notifications</h2>
-          <p>Payment reminders and updates</p>
-        </div>
-
+        <div style={cardStyle}><h2>💳 Payment Reminder</h2><p>Check your Digital Khata for any outstanding balance.</p></div>
+        <div style={cardStyle}><h2>🛒 Store Update</h2><p>You can view the latest available products from the Products section.</p></div>
       </div>
+    </>;
+  } else if (customerPage === "profile") {
+    customerContent = <>
+      <div style={customerWelcomeStyle}><h1>👤 My Profile</h1><p>View your account information.</p></div>
+      <div style={{ ...cardStyle, maxWidth: 650, cursor: "default" }}>
+        <p><strong>Name:</strong> {user.name || "N/A"}</p>
+        <p><strong>Email:</strong> {user.email || "N/A"}</p>
+        <p><strong>Role:</strong> {user.role || "Customer"}</p>
+        <button onClick={onLogout} style={logoutButtonStyle}>↪ Logout</button>
+      </div>
+    </>;
+  } else {
+    customerContent = <>
+      <header style={headerStyle}><div style={topBarStyle}>
+        <div><h1 style={titleStyle}>Kirana Store</h1><p style={subtitleStyle}>Customer Dashboard</p></div>
+        <div style={userBoxStyle}><span>Welcome, <strong>{user.name}</strong></span><span style={roleStyle}>Customer</span></div>
+      </div></header>
+      <div style={customerWelcomeStyle}><h2>Welcome to Kirana Store</h2><p>You are logged in as a customer.</p></div>
+      <div style={gridStyle}>
+        <div onClick={() => navigate("products")} style={cardStyle}><h2>🛒 Products</h2><p>View available products</p></div>
+        <div onClick={() => navigate("orders")} style={cardStyle}><h2>🧾 My Orders</h2><p>View your purchase history</p></div>
+        <div onClick={() => navigate("khata")} style={cardStyle}><h2>📒 My Khata</h2><p>View credit and outstanding balance</p></div>
+        <div onClick={() => navigate("notifications")} style={cardStyle}><h2>🔔 Notifications</h2><p>Payment reminders and updates</p></div>
+        <div onClick={() => navigate("profile")} style={cardStyle}><h2>👤 My Profile</h2><p>View your account information</p></div>
+      </div>
+    </>;
+  }
 
+  return (
+    <div className="customer-app-shell">
+      <style>{`
+        .customer-app-shell { display:flex; min-height:100vh; background:#f5f6fa; font-family:Arial,sans-serif; color:#222; }
+        .customer-sidebar { width:250px; flex:0 0 250px; background:#0f766e; color:white; padding:22px 14px; box-sizing:border-box; display:flex; flex-direction:column; }
+        .customer-brand { display:flex; align-items:center; gap:10px; padding:4px 10px 24px; font-size:19px; font-weight:700; }
+        .customer-brand img { width:38px; height:38px; object-fit:contain; background:white; border-radius:9px; }
+        .customer-nav { display:flex; flex-direction:column; gap:6px; }
+        .customer-nav-button { border:0; width:100%; text-align:left; color:#ccfbf1; background:transparent; padding:12px 13px; border-radius:8px; cursor:pointer; font-size:14px; }
+        .customer-nav-button:hover { background:#115e59; color:white; }
+        .customer-nav-button.active { background:#14b8a6; color:#042f2e; font-weight:700; }
+        .customer-sidebar-bottom { margin-top:auto; padding-top:24px; }
+        .customer-logout { width:100%; padding:12px; border:1px solid #5eead4; border-radius:8px; color:white; background:#134e4a; cursor:pointer; font-size:14px; }
+        .customer-main { min-width:0; flex:1; padding:clamp(16px,3vw,34px); box-sizing:border-box; overflow-x:hidden; }
+        .customer-mobile-bar { display:none; }
+        @media (max-width:760px) {
+          .customer-app-shell { display:block; }
+          .customer-mobile-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; background:#0f766e; color:white; padding:12px 16px; position:sticky; top:0; z-index:30; }
+          .customer-mobile-menu-button { border:1px solid #5eead4; background:#115e59; color:white; border-radius:7px; padding:8px 12px; font-size:16px; }
+          .customer-sidebar { display:none; width:100%; }
+          .customer-sidebar.mobile-open { display:flex; }
+          .customer-brand { padding-bottom:16px; }
+          .customer-main { padding:16px 12px 24px; }
+        }
+      `}</style>
+      <div className="customer-mobile-bar">
+        <strong>🛒 Smart Kirana</strong>
+        <button className="customer-mobile-menu-button" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle customer navigation">
+          {sidebarOpen ? "✕ Close" : "☰ Menu"}
+        </button>
+      </div>
+      <aside className={`customer-sidebar${sidebarOpen ? " mobile-open" : ""}`}>
+        <div className="customer-brand"><img src="/kirana-icon.png" alt="Smart Kirana" /><span>Smart Kirana</span></div>
+        <nav className="customer-nav" aria-label="Customer navigation">
+          {navItems.map((item) => <button key={item.id} className={`customer-nav-button${customerPage === item.id ? " active" : ""}`} onClick={() => navigate(item.id)}>
+            <span style={{ display:"inline-block", width:27 }}>{item.icon}</span>{item.label}
+          </button>)}
+        </nav>
+        <div className="customer-sidebar-bottom">
+          <div style={{ fontSize:13, color:"#ccfbf1", padding:"0 10px 12px", overflowWrap:"anywhere" }}>Signed in as <strong>{user.name}</strong></div>
+          <button className="customer-logout" onClick={onLogout}>↪ Logout</button>
+        </div>
+      </aside>
+      <main className="customer-main">{customerContent}</main>
     </div>
   );
 }
@@ -789,10 +1275,14 @@ const homeNavStyle = {
   gap: "20px"
 };
 
+
 const homeLogoStyle = {
+  display: "flex",
+  alignItems: "center",
   fontSize: "22px",
   fontWeight: "bold"
 };
+
 
 const homeLoginButtonStyle = {
   padding: "10px 24px",
