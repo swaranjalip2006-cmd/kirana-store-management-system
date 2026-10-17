@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -45,16 +46,25 @@ app.use("/khata", khataRoutes);
 // Reports Routes
 app.use("/reports", reportRoutes);
 
-mongoose.connect("mongodb://localhost:27017/kirana-store")
+// MongoDB Connection
+mongoose
+  .connect(
+    process.env.MONGO_URI ||
+      "mongodb://localhost:27017/kirana-store"
+  )
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("MongoDB Error:", err));
 
+// API Home Route
 app.get("/", (req, res) => {
   res.json({
-    message: "Kirana Store API Running"
+    message: "Kirana Store API Running",
   });
 });
 
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+// Server Port (Local + Render Deployment)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
