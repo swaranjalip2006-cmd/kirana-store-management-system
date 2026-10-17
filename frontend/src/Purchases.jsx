@@ -12,21 +12,21 @@ function Purchases() {
   const [message, setMessage] = useState("");
 
   const loadPurchases = () => {
-    fetch("http://localhost:5000/purchases")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/purchases")
       .then((response) => response.json())
       .then((data) => setPurchases(data))
       .catch((error) => console.log("Error:", error));
   };
 
   const loadSuppliers = () => {
-    fetch("http://localhost:5000/suppliers")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/suppliers")
       .then((response) => response.json())
       .then((data) => setSuppliers(data))
       .catch((error) => console.log("Error:", error));
   };
 
   const loadProducts = () => {
-    fetch("http://localhost:5000/products")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/products")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.log("Error:", error));
@@ -43,7 +43,7 @@ function Purchases() {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/purchases", {
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/purchases", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

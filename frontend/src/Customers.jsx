@@ -9,7 +9,7 @@ function Customers() {
   const [error, setError] = useState("");
 
   const loadCustomers = () => {
-    fetch("http://localhost:5000/customers")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/customers")
       .then((response) => response.json())
       .then((data) => setCustomers(data))
       .catch((error) => console.log("Error:", error));
@@ -28,7 +28,7 @@ function Customers() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/customers", {
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/customers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

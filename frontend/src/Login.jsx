@@ -42,8 +42,8 @@ function Login({ onLogin, onBackHome }) {
       setLoading(true);
 
       const endpoint = isRegister
-        ? "http://localhost:5000/auth/register"
-        : "http://localhost:5000/auth/login";
+        ? "https://smart-kirana-backend-x2e9.onrender.com/auth/register"
+        : "https://smart-kirana-backend-x2e9.onrender.com/auth/login";
 
       const body = isRegister
         ? {

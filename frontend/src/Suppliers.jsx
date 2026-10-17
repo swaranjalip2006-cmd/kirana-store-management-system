@@ -9,7 +9,7 @@ function Suppliers() {
   const [message, setMessage] = useState("");
 
   const loadSuppliers = () => {
-    fetch("http://localhost:5000/suppliers")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/suppliers")
       .then((response) => response.json())
       .then((data) => setSuppliers(data))
       .catch((error) => console.log("Error:", error));
@@ -24,7 +24,7 @@ function Suppliers() {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/suppliers", {
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/suppliers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

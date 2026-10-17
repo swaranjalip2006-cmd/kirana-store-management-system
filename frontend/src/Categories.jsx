@@ -10,7 +10,7 @@ function Categories() {
 
   const loadCategories = async () => {
     try {
-      const response = await fetch("http://localhost:5000/categories");
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/categories");
       const data = await response.json();
 
       if (Array.isArray(data)) {
@@ -40,7 +40,7 @@ function Categories() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/categories",
+        "https://smart-kirana-backend-x2e9.onrender.com/categories",
         {
           method: "POST",
           headers: {

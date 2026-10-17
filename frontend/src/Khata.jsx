@@ -15,7 +15,7 @@ function Khata() {
   const [loading, setLoading] = useState(false);
 
   const loadEntries = useCallback(async () => {
-    const response = await fetch("http://localhost:5000/khata");
+    const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/khata");
 
     if (!response.ok) {
       throw new Error("Could not load khata records");
@@ -26,7 +26,7 @@ function Khata() {
   }, []);
 
   const loadCustomers = useCallback(async () => {
-    const response = await fetch("http://localhost:5000/customers");
+    const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/customers");
 
     if (!response.ok) {
       throw new Error("Could not load customers");
@@ -70,7 +70,7 @@ function Khata() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/khata", {
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/khata", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

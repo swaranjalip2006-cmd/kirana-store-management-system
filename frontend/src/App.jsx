@@ -46,12 +46,12 @@ function App() {
         : {};
 
       const responses = await Promise.all([
-        fetch("http://localhost:5000/products", { headers }),
-        fetch("http://localhost:5000/categories", { headers }),
-        fetch("http://localhost:5000/suppliers", { headers }),
-        fetch("http://localhost:5000/purchases", { headers }),
-        fetch("http://localhost:5000/sales", { headers }),
-        fetch("http://localhost:5000/customers", { headers })
+        fetch("https://smart-kirana-backend-x2e9.onrender.com/products", { headers }),
+        fetch("https://smart-kirana-backend-x2e9.onrender.com/categories", { headers }),
+        fetch("https://smart-kirana-backend-x2e9.onrender.com/suppliers", { headers }),
+        fetch("https://smart-kirana-backend-x2e9.onrender.com/purchases", { headers }),
+        fetch("https://smart-kirana-backend-x2e9.onrender.com/sales", { headers }),
+        fetch("https://smart-kirana-backend-x2e9.onrender.com/customers", { headers })
       ]);
 
       const data = await Promise.all(
@@ -950,7 +950,7 @@ function Reports() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5000/reports",
+        "https://smart-kirana-backend-x2e9.onrender.com/reports",
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -1084,7 +1084,7 @@ function CustomerDashboard({ user, onLogout }) {
   const loadProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/products", { headers });
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/products", { headers });
       const data = await response.json();
       setProducts(response.ok && Array.isArray(data) ? data : []);
     } catch (error) {
@@ -1096,7 +1096,7 @@ function CustomerDashboard({ user, onLogout }) {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/sales", { headers });
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/sales", { headers });
       const data = await response.json();
       if (response.ok && Array.isArray(data)) {
         setOrders(data.filter((sale) => {
@@ -1113,7 +1113,7 @@ function CustomerDashboard({ user, onLogout }) {
   const loadKhata = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/khata", { headers });
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/khata", { headers });
       const data = await response.json();
       if (response.ok && Array.isArray(data)) {
         setKhata(data.filter((entry) => {

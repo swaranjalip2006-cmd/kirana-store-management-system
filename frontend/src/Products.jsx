@@ -26,7 +26,7 @@ function Products() {
   const loadProducts = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/products"
+        "https://smart-kirana-backend-x2e9.onrender.com/products"
       );
       const data = await response.json();
 
@@ -76,8 +76,8 @@ function Products() {
 
       const isEditing = Boolean(editingId);
       const url = isEditing
-        ? `http://localhost:5000/products/${editingId}`
-        : "http://localhost:5000/products";
+        ? `https://smart-kirana-backend-x2e9.onrender.com/products/${editingId}`
+        : "https://smart-kirana-backend-x2e9.onrender.com/products";
 
       const response = await fetch(url, {
         method: isEditing ? "PUT" : "POST",
@@ -148,7 +148,7 @@ function Products() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/products/${product._id}`,
+        `https://smart-kirana-backend-x2e9.onrender.com/products/${product._id}`,
         {
           method: "DELETE",
           headers

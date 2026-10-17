@@ -12,14 +12,14 @@ function Sales() {
   const [message, setMessage] = useState("");
 
   const loadSales = () => {
-    fetch("http://localhost:5000/sales")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/sales")
       .then((response) => response.json())
       .then((data) => setSales(data))
       .catch((error) => console.log("Error:", error));
   };
 
   const loadProducts = () => {
-    fetch("http://localhost:5000/products")
+    fetch("https://smart-kirana-backend-x2e9.onrender.com/products")
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.log("Error:", error));
@@ -35,7 +35,7 @@ function Sales() {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/sales", {
+      const response = await fetch("https://smart-kirana-backend-x2e9.onrender.com/sales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
